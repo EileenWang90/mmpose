@@ -416,7 +416,6 @@ def inference_top_down_pose_model(model,
 
 def inference_bottom_up_pose_model(model,
                                    img_or_path,
-                                   use_nms=True,
                                    oks_thr=0.9,
                                    return_heatmap=False,
                                    outputs=None):
@@ -430,7 +429,6 @@ def inference_bottom_up_pose_model(model,
     Args:
         model (nn.Module): The loaded pose model.
         img_or_path (str| np.ndarray): Image filename or loaded image.
-        use_nms (bool) : Flag to use nms, default: True.
         oks_thr (float): retain oks overlap < oks_thr, default: 0.9.
         return_heatmap (bool) : Flag to return heatmap, default: False.
         outputs (list(str) | tuple(str)) : Names of layers whose outputs
@@ -503,8 +501,7 @@ def inference_bottom_up_pose_model(model,
                 'area': area,
             })
 
-    # pose nms
-    if use_nms:
+        # pose nms
         keep = oks_nms(list(pose_results), oks_thr, sigmas=None)
         pose_results = [pose_results[_keep] for _keep in keep]
 
