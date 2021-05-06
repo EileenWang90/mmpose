@@ -145,10 +145,13 @@ val_pipeline = [
 
 test_pipeline = val_pipeline
 
-data_root = 'data/coco'
+# data_root = 'data/coco'
+data_root = '/home/ytwang/dataset/COCO2017'
 data = dict(
-    samples_per_gpu=64,
-    workers_per_gpu=2,
+    # samples_per_gpu=64,
+    # workers_per_gpu=2,
+    samples_per_gpu=128,
+    workers_per_gpu=4,
     train=dict(
         type='TopDownCocoDataset',
         ann_file=f'{data_root}/annotations/person_keypoints_train2017.json',

@@ -1,0 +1,177 @@
+###########################################################################################################################################################################
+(base2) [ytwang@gpu02 mmpose]$ ./tools/dist_test.sh configs/top_down/resnet/coco/res50_coco_256x192.py checkpoint/res50_coco_256x192-ec54d7f3_20200709.pth 1 --eval mAP
+###########################################################################################################################################################################
+# batchsize=512 显存占用25267M 感觉可能和后面的HRNet的参数设置并不一致, 201.7 task/s, elapsed: 516s    按原来设置的时候 batchsize=32 173.2 task/s, elapsed: 601s 显存占用大概在1300M左右
+loading annotations into memory...
+Done (t=0.30s)
+creating index...
+index created!
+=> Total boxes: 104125
+=> Total boxes after filter low score@0.0: 104125
+=> num_images: 5000
+=> load 104125 samples
+Use load_from_local loader
+[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 104125/104125, 173.2 task/s, elapsed: 601s, ETA:     0sLoading and preparing results...
+DONE (t=4.15s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *keypoints*
+DONE (t=11.15s).
+Accumulating evaluation results...
+DONE (t=0.34s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.718
+ Average Precision  (AP) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.898
+ Average Precision  (AP) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.795
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.679
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.786
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.773
+ Average Recall     (AR) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.937
+ Average Recall     (AR) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.841
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.729
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.837
+AP: 0.7176335583142902
+AP (L): 0.7859530285825069
+AP (M): 0.6789447732821028
+AP .5: 0.8984441197238628
+AP .75: 0.7948567962695251
+AR: 0.7730321158690178
+AR (L): 0.8366406540319584
+AR (M): 0.7292543021032504
+AR .5: 0.9370277078085643
+AR .75: 0.8408375314861462
+
+
+###########################################################################################################################################################################
+./tools/dist_test.sh configs/top_down/hrnet/coco/hrnet_w32_coco_256x192.py checkpoint/hrnet_w32_coco_256x192-c78dce93_20200708.pth 1 --eval mAP
+###########################################################################################################################################################################
+# batchsize=512 显存占用 9635M； 微软原实现 AP 0.744 具体速度和mAP区别可见 https://github.com/open-mmlab/mmpose Benchmark部分
+
+loading annotations into memory...
+Done (t=0.30s)
+creating index...
+index created!
+=> Total boxes: 104125
+=> Total boxes after filter low score@0.0: 104125
+=> num_images: 5000
+=> load 104125 samples
+Use load_from_local loader
+[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 104125/104125, 159.2 task/s, elapsed: 654s, ETA:     0sLoading and preparing results...
+DONE (t=5.09s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *keypoints*
+DONE (t=12.03s).
+Accumulating evaluation results...
+DONE (t=0.32s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.746
+ Average Precision  (AP) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.904
+ Average Precision  (AP) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.819
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.711
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.814
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.799
+ Average Recall     (AR) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.942
+ Average Recall     (AR) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.863
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.757
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.861
+AP: 0.7463078132057893
+AP (L): 0.8135862152481564
+AP (M): 0.7108425340519114
+AP .5: 0.9042066755339694
+AP .75: 0.8187270090555081
+AR: 0.7994175062972293
+AR (L): 0.860795243403939
+AR (M): 0.7570882272603114
+AR .5: 0.9422229219143576
+AR .75: 0.8630352644836272
+
+
+###########################################################################################################################################################################
+(base2) [ytwang@gpu02 mmpose]$ ./tools/dist_test.sh configs/top_down/darkpose/coco/hrnet_w32_coco_256x192_dark.py checkpoint/hrnet_w32_coco_256x192_dark-07f147eb_20200812.pth 1 --eval mAP
+###########################################################################################################################################################################
+# batchsize=512 显存占用 9635M
+
+loading annotations into memory...
+Done (t=0.31s)
+creating index...
+index created!
+=> Total boxes: 104125
+=> Total boxes after filter low score@0.0: 104125
+=> num_images: 5000
+=> load 104125 samples
+Use load_from_local loader
+[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 104125/104125, 126.8 task/s, elapsed: 821s, ETA:     0sLoading and preparing results...
+DONE (t=3.76s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *keypoints*
+DONE (t=11.64s).
+Accumulating evaluation results...
+DONE (t=0.29s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.757
+ Average Precision  (AP) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.908
+ Average Precision  (AP) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.822
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.723
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.823
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.808
+ Average Recall     (AR) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.944
+ Average Recall     (AR) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.867
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.768
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.867
+AP: 0.7570567321124285
+AP (L): 0.8230708267813777
+AP (M): 0.7226697425025638
+AP .5: 0.9075659014402293
+AP .75: 0.8222293161010659
+AR: 0.8078557934508815
+AR (L): 0.8670011148272018
+AR (M): 0.7675225348265501
+AR .5: 0.9439546599496221
+AR .75: 0.8668136020151134
+
+
+###########################################################################################################################################################################
+(base2) [ytwang@gpu02 mmpose]$ ./tools/dist_test.sh configs/top_down/hrnet/coco/hrnet_w48_coco_256x192.py checkpoint/hrnet_w48_coco_256x192-b9e0b3ab_20200708.pth 1 --eval mAP
+###########################################################################################################################################################################
+# batchsize=512 显存占用 12047M
+
+loading annotations into memory...
+Done (t=0.28s)
+creating index...
+index created!
+=> Total boxes: 104125
+=> Total boxes after filter low score@0.0: 104125
+=> num_images: 5000
+=> load 104125 samples
+Use load_from_local loader
+[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 104125/104125, 98.2 task/s, elapsed: 1060s, ETA:     0sLoading and preparing results...
+DONE (t=3.76s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *keypoints*
+DONE (t=11.28s).
+Accumulating evaluation results...
+DONE (t=0.28s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.756
+ Average Precision  (AP) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.907
+ Average Precision  (AP) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.825
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.720
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.823
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.806
+ Average Recall     (AR) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.942
+ Average Recall     (AR) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.869
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.764
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.867
+AP: 0.7557519276117295
+AP (L): 0.8233173676792234
+AP (M): 0.7195828909779828
+AP .5: 0.9070125132500111
+AP .75: 0.8250932407353384
+AR: 0.80625
+AR (L): 0.8674470457079153
+AR (M): 0.7643540016388964
+AR .5: 0.9422229219143576
+AR .75: 0.8691750629722922

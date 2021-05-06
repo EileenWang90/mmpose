@@ -145,7 +145,8 @@ val_pipeline = [
 
 test_pipeline = val_pipeline
 
-data_root = 'data/coco'
+# data_root = 'data/coco'
+data_root = '/home/ytwang/dataset/COCO2017'
 data = dict(
     samples_per_gpu=64,
     workers_per_gpu=2,

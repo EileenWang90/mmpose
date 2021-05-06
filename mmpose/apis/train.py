@@ -60,7 +60,7 @@ def train_model(model,
     ]
 
     # determine wether use adversarial training precess or not
-    use_adverserial_train = cfg.get('use_adversarial_train', False)
+    use_adverserial_train = cfg.get('use_adversarial_train', False) ##？这是什么？
 
     # put model on gpus
     if distributed:
