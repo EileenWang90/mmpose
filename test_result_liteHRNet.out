@@ -1,0 +1,174 @@
+###########################################################################################################################################################################
+(base2) [ytwang@gpu02 mmpose]$ ./tools/dist_test.sh configs/top_down/lite_hrnet/coco/litehrnet_18_coco_256x192.py checkpoint/litehrnet_18_coco_256x192.pth 1 --eval mAP
+###########################################################################################################################################################################
+# batchsize=512 显存占用 5371M
+loading annotations into memory...
+Done (t=0.33s)
+creating index...
+index created!
+=> Total boxes: 104125
+=> Total boxes after filter low score@0.0: 104125
+=> num_images: 5000
+=> load 104125 samples
+Use load_from_local loader
+[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 104125/104125, 321.3 task/s, elapsed: 324s, ETA:     0sLoading and preparing results...
+DONE (t=4.67s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *keypoints*
+DONE (t=13.48s).
+Accumulating evaluation results...
+DONE (t=0.37s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.644
+ Average Precision  (AP) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.864
+ Average Precision  (AP) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.720
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.616
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.702
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.707
+ Average Recall     (AR) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.909
+ Average Recall     (AR) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.777
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.669
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.762
+AP: 0.6439338180748431
+AP (L): 0.7019583848264456
+AP (M): 0.6159105878499909
+AP .5: 0.864004347515576
+AP .75: 0.7196867977591203
+AR: 0.7072890428211587
+AR (L): 0.7622073578595318
+AR (M): 0.6687243922425566
+AR .5: 0.9091624685138538
+AR .75: 0.7766057934508817
+
+
+###########################################################################################################################################################################
+(base2) [ytwang@gpu02 mmpose]$ ./tools/dist_test.sh configs/top_down/lite_hrnet/coco/litehrnet_30_coco_256x192.py checkpoint/litehrnet_30_coco_256x192.pth 1 --eval mAP
+###########################################################################################################################################################################
+# batchsize=64 显存占用 5315M
+loading annotations into memory...
+Done (t=0.34s)
+creating index...
+index created!
+=> Total boxes: 104125
+=> Total boxes after filter low score@0.0: 104125
+=> num_images: 5000
+=> load 104125 samples
+Use load_from_local loader
+[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 104125/104125, 227.6 task/s, elapsed: 458s, ETA:     0sLoading and preparing results...
+DONE (t=4.37s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *keypoints*
+DONE (t=12.99s).
+Accumulating evaluation results...
+DONE (t=0.35s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.672
+ Average Precision  (AP) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.880
+ Average Precision  (AP) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.750
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.643
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.731
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.733
+ Average Recall     (AR) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.922
+ Average Recall     (AR) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.802
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.695
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.788
+AP: 0.6719738929698382
+AP (L): 0.7307558148264535
+AP (M): 0.6432983587050959
+AP .5: 0.8802160369215198
+AP .75: 0.7500158760393164
+AR: 0.7330447103274558
+AR (L): 0.7875510962467485
+AR (M): 0.6950833105708822
+AR .5: 0.9223866498740554
+AR .75: 0.8019521410579346
+
+
+###########################################################################################################################################################################
+(base2) [ytwang@gpu02 mmpose]$ ./tools/dist_test.sh configs/top_down/naive_litehrnet/coco/naive_litehrnet_18_coco_256x192.py checkpoint/naive_litehrnet_18_coco_256x192.pth 1 --eval mAP
+###########################################################################################################################################################################
+# batchsize=512 显存占用 4529M
+loading annotations into memory...
+Done (t=0.32s)
+creating index...
+index created!
+=> Total boxes: 104125
+=> Total boxes after filter low score@0.0: 104125
+=> num_images: 5000
+=> load 104125 samples
+Use load_from_local loader
+[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 104125/104125, 305.4 task/s, elapsed: 341s, ETA:     0sLoading and preparing results...
+DONE (t=4.92s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *keypoints*
+DONE (t=13.41s).
+Accumulating evaluation results...
+DONE (t=0.34s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.628
+ Average Precision  (AP) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.855
+ Average Precision  (AP) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.699
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.601
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.683
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.691
+ Average Recall     (AR) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.901
+ Average Recall     (AR) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.758
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.653
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.744
+AP: 0.6278658372833811
+AP (L): 0.6831971212947094
+AP (M): 0.6013537022157338
+AP .5: 0.855391677489872
+AP .75: 0.6988169466282866
+AR: 0.6907588161209068
+AR (L): 0.7444072835377182
+AR (M): 0.6531002458344715
+AR .5: 0.9008186397984886
+AR .75: 0.7575566750629723
+
+
+###########################################################################################################################################################################
+(base2) [ytwang@gpu02 mmpose]$ ./tools/dist_test.sh configs/top_down/wider_naive_litehrnet/coco/naive_litehrnet_18_coco_256x192.py checkpoint/wider_naive_litehrnet_18_coco_256x192.pth 1 --eval mAP
+###########################################################################################################################################################################
+# batchsize=512 显存占用 5011M
+loading annotations into memory...
+Done (t=0.31s)
+creating index...
+index created!
+=> Total boxes: 104125
+=> Total boxes after filter low score@0.0: 104125
+=> num_images: 5000
+=> load 104125 samples
+Use load_from_local loader
+[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 104125/104125, 279.6 task/s, elapsed: 372s, ETA:     0sLoading and preparing results...
+DONE (t=4.87s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *keypoints*
+DONE (t=13.58s).
+Accumulating evaluation results...
+DONE (t=0.36s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.660
+ Average Precision  (AP) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.871
+ Average Precision  (AP) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.737
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.631
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.716
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.721
+ Average Recall     (AR) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.913
+ Average Recall     (AR) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.793
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.683
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.774
+AP: 0.6597969788999726
+AP (L): 0.7164360011710116
+AP (M): 0.6314768631163039
+AP .5: 0.8706187798004376
+AP .75: 0.7370910734724649
+AR: 0.7209697732997482
+AR (L): 0.774284652545522
+AR (M): 0.6834198306473641
+AR .5: 0.9127833753148614
+AR .75: 0.7929785894206549
