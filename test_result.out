@@ -86,11 +86,44 @@ AR (M): 0.7570882272603114
 AR .5: 0.9422229219143576
 AR .75: 0.8630352644836272
 
+*******************************************************************************
+**我自己训练的结果  比微软原实现高，和mmpose的实现差不多 0.746
+[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 104125/104125, 158.6 task/s, elapsed: 657s, ETA:     0sLoading and preparing results...
+DONE (t=4.42s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *keypoints*
+DONE (t=12.47s).
+Accumulating evaluation results...
+DONE (t=0.31s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.746
+ Average Precision  (AP) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.906
+ Average Precision  (AP) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.819
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.710
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.812
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.799
+ Average Recall     (AR) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.944
+ Average Recall     (AR) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.864
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.758
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.860
+AP: 0.7455717586629236
+AP (L): 0.812251716761925
+AP (M): 0.7099910790387418
+AP .5: 0.9064858530818506
+AP .75: 0.8186711523757987
+AR: 0.7993860201511336
+AR (L): 0.8600148643626904
+AR (M): 0.7577164709095876
+AR .5: 0.943639798488665
+AR .75: 0.8641372795969773
+*******************************************************************************
+
 
 ###########################################################################################################################################################################
 (base2) [ytwang@gpu02 mmpose]$ ./tools/dist_test.sh configs/top_down/darkpose/coco/hrnet_w32_coco_256x192_dark.py checkpoint/hrnet_w32_coco_256x192_dark-07f147eb_20200812.pth 1 --eval mAP
 ###########################################################################################################################################################################
-# batchsize=512 显存占用 9635M
+# batchsize=512 显存占用 9635M  测试用了821Ss(126.8 task/s)   但HRNet测试只用了654s(159.2 task/s)    直接使用HRNet的checkpoint进行测试，AP值为0.754感觉不错。
 
 loading annotations into memory...
 Done (t=0.31s)
@@ -131,6 +164,62 @@ AR (M): 0.7675225348265501
 AR .5: 0.9439546599496221
 AR .75: 0.8668136020151134
 
+***********************************************************
+直接使用HRNet的checkpoint进行测试，AP值为0.754感觉不错。
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.754
+ Average Precision  (AP) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.905
+ Average Precision  (AP) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.820
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.718
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.823
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.805
+ Average Recall     (AR) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.942
+ Average Recall     (AR) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.864
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.763
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.866
+AP: 0.7541654766380521
+AP (L): 0.8225116115976879
+AP (M): 0.7175832309702533
+AP .5: 0.9052020609040701
+AP .75: 0.8200306197002558
+AR: 0.80492758186398
+AR (L): 0.8664437012263099
+AR (M): 0.762687790221251
+AR .5: 0.9423803526448362
+AR .75: 0.864294710327456
+************************************************************
+
+*******************************************************************************
+*用我自己训练的HRNet-w32直接使用dark,效果：
+[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 104126/104125, 166.8 task/s, elapsed: 624s, ETA:     0sLoading and preparing results...
+DONE (t=5.18s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *keypoints*
+DONE (t=15.04s).
+Accumulating evaluation results...
+DONE (t=0.37s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.755
+ Average Precision  (AP) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.906
+ Average Precision  (AP) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.822
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.719
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.822
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.806
+ Average Recall     (AR) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.943
+ Average Recall     (AR) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.865
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.764
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.867
+AP: 0.7550517168145428
+AP (L): 0.8223230753808496
+AP (M): 0.7189016017233405
+AP .5: 0.906399571336639
+AP .75: 0.8218467195971609
+AR: 0.8059666246851386
+AR (L): 0.8668524712002974
+AR (M): 0.764244741873805
+AR .5: 0.9434823677581864
+AR .75: 0.8646095717884131
+*******************************************************************************
 
 ###########################################################################################################################################################################
 (base2) [ytwang@gpu02 mmpose]$ ./tools/dist_test.sh configs/top_down/hrnet/coco/hrnet_w48_coco_256x192.py checkpoint/hrnet_w48_coco_256x192-b9e0b3ab_20200708.pth 1 --eval mAP

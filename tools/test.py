@@ -13,6 +13,7 @@ from mmpose.apis import multi_gpu_test, single_gpu_test
 from mmpose.core import wrap_fp16_model
 from mmpose.datasets import build_dataloader, build_dataset
 from mmpose.models import build_posenet
+from torchsummary import summary
 
 
 def parse_args():
@@ -106,10 +107,17 @@ def main():
 
     # build the model and load checkpoint
     model = build_posenet(cfg.model)
+    # print(model)
+    # model=model.cuda()
+    # summary(model,input_size=(3, 256, 192))
+    # with open('../logs/dark-HRNet-w32.out','w+') as f:
+    #     f.write(model)
+    # f.close()
     fp16_cfg = cfg.get('fp16', None)
     if fp16_cfg is not None:
         wrap_fp16_model(model)
-    load_checkpoint(model, args.checkpoint, map_location='cpu')
+    load_checkpoint(model, args.checkpoint, map_location='cpu') #结果是因为文件名写错了，只能说mmcv报的错误实在是不够明显。
+    # model.load_state_dict(torch.load(args.checkpoint, map_location='cpu')['state_dict']) #"meta", "state_dict", "optimizer"
 
     if args.fuse_conv_bn:
         model = fuse_conv_bn(model)

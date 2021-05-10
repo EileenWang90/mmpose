@@ -18,10 +18,11 @@ from .shufflenet_v2 import ShuffleNetV2
 from .tcn import TCN
 from .vgg import VGG
 from .litehrnet import LiteHRNet
+from .eahrnet import EAHRNet
 
 __all__ = [
     'AlexNet', 'HourglassNet', 'HRNet', 'MobileNetV2', 'MobileNetV3', 'RegNet',
     'ResNet', 'ResNetV1d', 'ResNeXt', 'SCNet', 'SEResNet', 'SEResNeXt',
     'ShuffleNetV1', 'ShuffleNetV2', 'CPM', 'RSN', 'MSPN', 'ResNeSt', 'VGG',
-    'TCN','LiteHRNet'
+    'TCN','LiteHRNet','EAHRNet'
 ]

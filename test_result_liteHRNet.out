@@ -1,7 +1,7 @@
 ###########################################################################################################################################################################
 (base2) [ytwang@gpu02 mmpose]$ ./tools/dist_test.sh configs/top_down/lite_hrnet/coco/litehrnet_18_coco_256x192.py checkpoint/litehrnet_18_coco_256x192.pth 1 --eval mAP
 ###########################################################################################################################################################################
-# batchsize=512 显存占用 5371M
+# batchsize=512 显存占用 5371M    github上给的结果是AP 0.648 AP50 0.867 AP75 0.730 AR 0.712 AR50 0.911
 loading annotations into memory...
 Done (t=0.33s)
 creating index...
@@ -40,6 +40,40 @@ AR (L): 0.7622073578595318
 AR (M): 0.6687243922425566
 AR .5: 0.9091624685138538
 AR .75: 0.7766057934508817
+
+**********************************************************************
+*直接将热图的坐标表示 改为 分布式感知坐标表示关键点(DARK)，测得结果
+[>>>>>>>>>>>>>>>>>>>>>] 104125/104125, 198.2 task/s, elapsed: 525s, ETA:     0sLoading and preparing results...
+DONE (t=4.58s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *keypoints*
+DONE (t=13.82s).
+Accumulating evaluation results...
+DONE (t=0.35s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.650
+ Average Precision  (AP) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.865
+ Average Precision  (AP) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.725
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.622
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.709
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.712
+ Average Recall     (AR) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.909
+ Average Recall     (AR) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.779
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.674
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.768
+AP: 0.6503556457619966
+AP (L): 0.7088657331518384
+AP (M): 0.6219263134346611
+AP .5: 0.8649409925554795
+AP .75: 0.7246966416369837
+AR: 0.712389798488665
+AR (L): 0.7675213675213676
+AR (M): 0.6738049713193117
+AR .5: 0.9090050377833753
+AR .75: 0.779124685138539
+
+**********************************************************************
 
 
 ###########################################################################################################################################################################
@@ -172,3 +206,114 @@ AR (L): 0.774284652545522
 AR (M): 0.6834198306473641
 AR .5: 0.9127833753148614
 AR .75: 0.7929785894206549
+
+
+
+
+###########################################################################################################################################################################
+(base2) [ytwang@gpu02 mmpose]$ ./tools/dist_test.sh configs/top_down/lite_hrnet/coco/litehrnet_18_coco_256x192.py work_dirs/litehrnet_18_coco_256x192/best.pth 1 --eval mAP
+###########################################################################################################################################################################
+# batchsize=512 显存占用 5371M    github AP 0.648 下载的.pth测得AP0.644  从0跑了210epoch，测得0.636，train中测得的是 0.6524  再训练之后
+loading annotations into memory...
+Done (t=0.35s)
+creating index...
+index created!
+=> Total boxes: 104125
+=> Total boxes after filter low score@0.0: 104125
+=> num_images: 5000
+=> load 104125 samples
+Use load_from_local loader
+[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 104125/104125, 306.0 task/s, elapsed: 340s, ETA:     0sLoading and preparing results...
+DONE (t=4.49s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *keypoints*
+DONE (t=13.77s).
+Accumulating evaluation results...
+DONE (t=0.35s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.636
+ Average Precision  (AP) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.862
+ Average Precision  (AP) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.713
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.611
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.692
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.700
+ Average Recall     (AR) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.906
+ Average Recall     (AR) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.773
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.663
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.753
+AP: 0.6362033218211054
+AP (L): 0.6921593250354274
+AP (M): 0.6109316138054323
+AP .5: 0.8619734153539245
+AP .75: 0.7127704015892233
+AR: 0.6998740554156171
+AR (L): 0.7528799702712746
+AR (M): 0.6626604752799782
+AR .5: 0.9055415617128464
+AR .75: 0.7725125944584383
+
+************************************************************************************
+**继续追加训练了150epoch load_from work_dirs/litehrnet_18_coco_256x192/best_210.pth   
+[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 104125/104125, 294.1 task/s, elapsed: 354s, ETA:     0sLoading and preparing results...
+DONE (t=5.09s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *keypoints*
+DONE (t=16.07s).
+Accumulating evaluation results...
+DONE (t=0.38s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.640
+ Average Precision  (AP) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.864
+ Average Precision  (AP) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.716
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.614
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.697
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.704
+ Average Recall     (AR) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.910
+ Average Recall     (AR) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.775
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.667
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.757
+AP: 0.640298195597975
+AP (L): 0.6973867595952279
+AP (M): 0.6139191983798866
+AP .5: 0.8639257165408455
+AP .75: 0.7155446870586915
+AR: 0.7037783375314862
+AR (L): 0.7570048309178744
+AR (M): 0.6665665118819994
+AR .5: 0.9099496221662469
+AR .75: 0.7748740554156172
+************************************************************************************
+************************************************************************************
+在追加训练150epoch基础上 使用Dark的热图的坐标表示算法   AP 0.648与论文中相等，但是其它既想仍低于论文中的结果
+[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 104125/104125, 211.2 task/s, elapsed: 493s, ETA:     0sLoading and preparing results...
+DONE (t=4.88s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *keypoints*
+DONE (t=15.39s).
+Accumulating evaluation results...
+DONE (t=0.38s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.648
+ Average Precision  (AP) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.866
+ Average Precision  (AP) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.721
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.621
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.705
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.709
+ Average Recall     (AR) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.911
+ Average Recall     (AR) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.778
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.672
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.762
+AP: 0.647653877234204
+AP (L): 0.7054582098445152
+AP (M): 0.6206829419186974
+AP .5: 0.8662478658885132
+AP .75: 0.720919508865485
+AR: 0.7093671284634762
+AR (L): 0.7623931623931625
+AR (M): 0.6723572794318493
+AR .5: 0.9112090680100756
+AR .75: 0.7775503778337531
+************************************************************************************

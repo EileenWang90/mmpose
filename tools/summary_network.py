@@ -7,7 +7,7 @@ from torchstat_utils import model_stats
 
 import sys
 sys.path.append('.')
-from models import build_posenet
+from mmpose.models import build_posenet
 
 
 def parse_args():
