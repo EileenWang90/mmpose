@@ -16,9 +16,17 @@ PORT=29501 ./tools/dist_test.sh configs/top_down/hrnet/coco/hrnet_w32_coco_256x1
 ./tools/dist_test.sh configs/top_down/naive_litehrnet/coco/wider_naive_litehrnet_18_coco_256x192.py checkpoint/wider_naive_litehrnet_18_coco_256x192.pth 1 --eval mAP
 
 ./tools/dist_test.sh configs/top_down/lite_hrnet/coco/litehrnet_18_coco_256x192.py work_dirs/litehrnet_18_coco_256x192/best.pth 1 --eval mAP
+./tools/dist_test.sh configs/top_down/lite_hrnet/coco/litehrnet_18_coco_256x192_dark.py work_dirs/litehrnet_18_coco_256x192_dark/best.pth 1 --eval mAP
+
+#EAHRNet
+./tools/dist_test.sh configs/top_down/eahrnet/coco/eahrnet_18_coco_256x192.py work_dirs/eahrnet_18_coco_256x192/epoch_250.pth 1 --eval mAP
+
+./tools/dist_test.sh configs/top_down/eahrnet/coco/eahrnet_18_coco_256x192_ghost.py work_dirs/eahrnet_18_coco_256x192_ghost/best.pth 1 --eval mAP
+
 ################################################################### Train ######################################################################
 # HRNet
 ./tools/dist_train.sh configs/top_down/hrnet/coco/hrnet_w32_coco_256x192.py 1 --resume-from work_dirs/hrnet_w32_coco_256x192/epoch_10.pth
+./tools/dist_train.sh configs/top_down/hrnet/coco/hrnet_w32_coco_256x192_bottleneck.py 2
 
 # Lite-HRNet
 ./tools/dist_train.sh configs/top_down/lite_hrnet/coco/litehrnet_18_coco_256x192.py 4 --autoscale-lr  # --gpu-ids 4,5,6,7
@@ -27,5 +35,28 @@ PORT=29501 ./tools/dist_test.sh configs/top_down/hrnet/coco/hrnet_w32_coco_256x1
 ./tools/dist_train.sh configs/top_down/lite_hrnet/coco/litehrnet_18_coco_256x192_dark.py 1 --autoscale-lr 
 ./tools/dist_train.sh configs/top_down/lite_hrnet/coco/litehrnet_18_coco_256x192_dark.py 2 --autoscale-lr  --resume-from work_dirs/litehrnet_18_coco_256x192_dark/epoch_60.pth
 
-#EAHRnet
+./tools/dist_train.sh configs/top_down/lite_hrnet/coco/litehrnet_18_coco_256x192_augment.py 4 --autoscale-lr 
+
+#EAHRnet onlyECA
 ./tools/dist_train.sh configs/top_down/eahrnet/coco/eahrnet_18_coco_256x192.py 4 --autoscale-lr
+#EAHRnet_ghost  only ghost_bottleneck
+PORT=29501 ./tools/dist_train.sh configs/top_down/eahrnet/coco/eahrnet_18_coco_256x192_ghost.py 2 --autoscale-lr
+#EAHRnet only CoordAttention
+./tools/dist_train.sh configs/top_down/eahrnet/coco/eahrnet_18_coco_256x192_ca.py 3 --autoscale-lr
+
+
+######################################################## Get the compulationaly complexity ######################################################
+#这儿似乎要把pretrained model注释掉  否则会出现unexpected key in source state_dict
+python tools/summary_network.py configs/top_down/hrnet/coco/hrnet_18_coco_256x192.py --shape 256 192 
+
+python tools/summary_network.py configs/top_down/lite_hrnet/coco/litehrnet_18_coco_256x192.py --shape 256 192 
+
+#MobilenetV2/shufflenetV2作为backbone
+python tools/summary_network.py configs/top_down/mobilenet_v2/coco/mobilenetv2_coco_256x192.py --shape 256 192 
+python tools/summary_network.py configs/top_down/mobilenet_v2/coco/mobilenetv2_coco_384x288.py --shape 384 288 
+
+python tools/summary_network.py configs/top_down/shufflenet_v2/coco/mobilenetv2_coco_256x192.py --shape 256 192 
+python tools/summary_network.py configs/top_down/shufflenet_v2/coco/shufflenetv2_coco_384x288.py --shape 384 288 
+
+#HRNet 数据增强操作
+python tools/summary_network.py configs/top_down/augmentation/hrnet_w32_coco_256x192_photometric.py --shape 256 192  #如果config中有pretrain权重文件时，可以先注释掉

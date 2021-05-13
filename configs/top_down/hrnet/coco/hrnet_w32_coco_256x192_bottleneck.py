@@ -3,12 +3,12 @@ load_from = None
 resume_from = None
 dist_params = dict(backend='nccl')
 workflow = [('train', 1)]
-checkpoint_config = dict(interval=10)
-evaluation = dict(interval=10, metric='mAP', key_indicator='AP')
+checkpoint_config = dict(interval=5)
+evaluation = dict(interval=5, metric='mAP', key_indicator='AP')
 
 optimizer = dict(
     type='Adam',
-    lr=5e-4,
+    lr=1e-3,
 )
 optimizer_config = dict(grad_clip=None)
 # learning policy
@@ -23,7 +23,7 @@ log_config = dict(
     interval=50,
     hooks=[
         dict(type='TextLoggerHook'),
-        # dict(type='TensorboardLoggerHook')
+        dict(type='TensorboardLoggerHook')
     ])
 
 channel_cfg = dict(
@@ -39,7 +39,8 @@ channel_cfg = dict(
 # model settings
 model = dict(
     type='TopDown',
-    pretrained=None,#'https://download.openmmlab.com/mmpose/top_down/hrnet/''hrnet_w32_coco_256x192-c78dce93_20200708.pth',
+    pretrained=None,#'https://download.openmmlab.com/mmpose/'
+    #'pretrain_models/hrnet_w32-36af842e.pth',
     backbone=dict(
         type='HRNet',
         in_channels=3,
@@ -53,25 +54,31 @@ model = dict(
             stage2=dict(
                 num_modules=1,
                 num_branches=2,
-                block='BASIC',
+                block='BOTTLENECK',#'BASIC',
                 num_blocks=(4, 4),
-                num_channels=(32, 64)),
+                # num_channels=(8, 16)),
+                num_channels=(16, 32)),
+                # num_channels=(32, 64)),
             stage3=dict(
                 num_modules=4,
                 num_branches=3,
-                block='BASIC',
+                block='BOTTLENECK',#'BASIC',
                 num_blocks=(4, 4, 4),
-                num_channels=(32, 64, 128)),
+                # num_channels=(8, 16, 32)),
+                num_channels=(16, 32, 64)),
+                # num_channels=(32, 64, 128)),
             stage4=dict(
                 num_modules=3,
                 num_branches=4,
-                block='BASIC',
+                block='BOTTLENECK',#'BASIC',
                 num_blocks=(4, 4, 4, 4),
-                num_channels=(32, 64, 128, 256))),
+                # num_channels=(8, 16, 32, 64))),
+                num_channels=(16, 32, 64, 128))),
+                # num_channels=(32, 64, 128, 256))),
     ),
     keypoint_head=dict(
         type='TopDownSimpleHead',
-        in_channels=32,
+        in_channels=64, #128
         out_channels=channel_cfg['num_output_channels'],
         num_deconv_layers=0,
         extra=dict(final_conv_kernel=1, ),
@@ -79,7 +86,7 @@ model = dict(
     train_cfg=dict(),
     test_cfg=dict(
         flip_test=True,
-        post_process='default',
+        post_process='default', ##'unbiased'
         shift_heatmap=True,
         modulate_kernel=11))
 
@@ -110,22 +117,12 @@ train_pipeline = [
     dict(
         type='TopDownGetRandomScaleRotation', rot_factor=40, scale_factor=0.5),
     dict(type='TopDownAffine'),
-    dict(
-        type='Albumentation',
-        transforms=[
-            dict(
-                type='GridDropout', #以网格方式删除图像的矩形区域和相应的蒙版 https://blog.csdn.net/zhangyuexiang123/article/details/107705311
-                unit_size_min=10,
-                unit_size_max=40,
-                random_offset=True,
-                p=0.5),
-        ]),
     dict(type='ToTensor'),
     dict(
         type='NormalizeTensor',
         mean=[0.485, 0.456, 0.406],
         std=[0.229, 0.224, 0.225]),
-    dict(type='TopDownGenerateTarget', sigma=2),
+    dict(type='TopDownGenerateTarget', sigma=2), #unbiased_encoding=True
     dict(
         type='Collect',
         keys=['img', 'target', 'target_weight'],
@@ -154,9 +151,12 @@ val_pipeline = [
 
 test_pipeline = val_pipeline
 
-data_root = 'data/coco'
+# data_root = 'data/coco'
+data_root = '/home/ytwang/dataset/COCO2017'
 data = dict(
-    samples_per_gpu=64,
+    # samples_per_gpu=64,
+    # workers_per_gpu=2,
+    samples_per_gpu=32, #128,4
     workers_per_gpu=2,
     train=dict(
         type='TopDownCocoDataset',

@@ -23,7 +23,7 @@ log_config = dict(
     interval=50,
     hooks=[
         dict(type='TextLoggerHook'),
-        # dict(type='TensorboardLoggerHook')
+        dict(type='TensorboardLoggerHook')
     ])
 
 channel_cfg = dict(
@@ -39,7 +39,7 @@ channel_cfg = dict(
 # model settings
 model = dict(
     type='TopDown',
-    pretrained='mmcls://mobilenet_v2',
+    pretrained='mmcls://mobilenet_v2', #None
     backbone=dict(type='MobileNetV2', widen_factor=1., out_indices=(7, )),
     keypoint_head=dict(
         type='TopDownSimpleHead',

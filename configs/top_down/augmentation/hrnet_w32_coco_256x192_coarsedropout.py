@@ -39,8 +39,7 @@ channel_cfg = dict(
 # model settings
 model = dict(
     type='TopDown',
-    pretrained='https://download.openmmlab.com/mmpose/top_down/hrnet/'
-    'hrnet_w32_coco_256x192-c78dce93_20200708.pth',
+    pretrained=None,#'https://download.openmmlab.com/mmpose/top_down/hrnet/' 'hrnet_w32_coco_256x192-c78dce93_20200708.pth',
     backbone=dict(
         type='HRNet',
         in_channels=3,
@@ -115,7 +114,7 @@ train_pipeline = [
         type='Albumentation',
         transforms=[
             dict(
-                type='CoarseDropout',
+                type='CoarseDropout', #随机去除图像的一块区域 https://blog.csdn.net/zhangyuexiang123/article/details/107705311
                 max_holes=8,
                 max_height=40,
                 max_width=40,

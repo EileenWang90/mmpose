@@ -19,10 +19,13 @@ from .tcn import TCN
 from .vgg import VGG
 from .litehrnet import LiteHRNet
 from .eahrnet import EAHRNet
+from .eahrnet_ghost import EAHRNet_ghost
+from .eahrnet_ca import EAHRNet_ca
+from .ghost_hrnet import GhostHRNet
 
 __all__ = [
     'AlexNet', 'HourglassNet', 'HRNet', 'MobileNetV2', 'MobileNetV3', 'RegNet',
     'ResNet', 'ResNetV1d', 'ResNeXt', 'SCNet', 'SEResNet', 'SEResNeXt',
     'ShuffleNetV1', 'ShuffleNetV2', 'CPM', 'RSN', 'MSPN', 'ResNeSt', 'VGG',
-    'TCN','LiteHRNet','EAHRNet'
+    'TCN','LiteHRNet','EAHRNet','GhostHRNet','EAHRNet_ghost','EAHRNet_ca'
 ]

@@ -208,8 +208,6 @@ AR .5: 0.9127833753148614
 AR .75: 0.7929785894206549
 
 
-
-
 ###########################################################################################################################################################################
 (base2) [ytwang@gpu02 mmpose]$ ./tools/dist_test.sh configs/top_down/lite_hrnet/coco/litehrnet_18_coco_256x192.py work_dirs/litehrnet_18_coco_256x192/best.pth 1 --eval mAP
 ###########################################################################################################################################################################
@@ -317,3 +315,39 @@ AR (M): 0.6723572794318493
 AR .5: 0.9112090680100756
 AR .75: 0.7775503778337531
 ************************************************************************************
+
+###########################################################################################################################################################################
+(base2) [ytwang@gpu01 mmpose]$ ./tools/dist_test.sh configs/top_down/lite_hrnet/coco/litehrnet_18_coco_256x192_dark.py work_dirs/litehrnet_18_coco_256x192_dark/epoch_240.pth 4 --eval mAP
+###########################################################################################################################################################################
+结果增强了之后还是达不到论文中的效果  
+
+Use load_from_local loader
+[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 104128/104125, 336.5 task/s, elapsed: 309s, ETA:     0sLoading and preparing results...
+DONE (t=4.97s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *keypoints*
+DONE (t=14.92s).
+Accumulating evaluation results...
+DONE (t=0.40s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.645
+ Average Precision  (AP) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.862
+ Average Precision  (AP) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.718
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.616
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.703
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.706
+ Average Recall     (AR) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.907
+ Average Recall     (AR) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.774
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.667
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.762
+AP: 0.6448214768475002
+AP (L): 0.7028435068317817
+AP (M): 0.6163929667076932
+AP .5: 0.8617525210459444
+AP .75: 0.7182213398235405
+AR: 0.7062657430730479
+AR (L): 0.7616127833519137
+AR (M): 0.6674132750614585
+AR .5: 0.9071158690176322
+AR .75: 0.7736146095717884

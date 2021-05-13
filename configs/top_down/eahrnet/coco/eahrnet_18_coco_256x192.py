@@ -1,6 +1,6 @@
 log_level = 'INFO'
 load_from = None #'work_dirs/litehrnet_18_coco_256x192/best_210.pth'#None
-resume_from = None
+resume_from = 'work_dirs/eahrnet_18_coco_256x192/epoch_210.pth'  #None
 dist_params = dict(backend='nccl')
 workflow = [('train', 1)]
 checkpoint_config = dict(interval=10)
@@ -19,7 +19,7 @@ lr_config = dict(
     warmup_iters=500,
     warmup_ratio=0.001,
     step=[170, 200]) #step=[170, 200])
-total_epochs = 210 #210
+total_epochs = 250 #210
 log_config = dict(
     interval=50,
     hooks=[dict(type='TextLoggerHook'),
