@@ -1,5 +1,5 @@
 log_level = 'INFO'
-load_from = None #'work_dirs/litehrnet_18_coco_256x192/best_210.pth'#None
+load_from = None #'work_dirs/eahrnet_18_coco_256x192_aug-ghost-ca/0epoch_170.pth' #'work_dirs/litehrnet_18_coco_256x192/best_210.pth'#None
 resume_from = None
 dist_params = dict(backend='nccl')
 workflow = [('train', 1)]
@@ -40,7 +40,7 @@ model = dict(
     type='TopDown',
     pretrained=None, #None
     backbone=dict(
-        type='EAHRNet_ghost',
+        type='EAHRNet_aug_ghost_ca',
         in_channels=3,
         extra=dict(
             stem=dict(stem_channels=32, out_channels=32, expand_ratio=1),
@@ -48,7 +48,7 @@ model = dict(
             stages_spec=dict(
                 num_modules=(2, 4, 2),
                 num_branches=(2, 3, 4),
-                num_blocks=(4, 4, 4),
+                num_blocks=(2, 2, 2),
                 module_type=('LITE', 'LITE', 'LITE'),
                 with_fuse=(True, True, True),
                 reduce_ratios=(8, 8, 8),
@@ -122,6 +122,21 @@ train_pipeline = [
         type='TopDownGetRandomScaleRotation', rot_factor=30,
         scale_factor=0.25),
     dict(type='TopDownAffine'),
+    #################################################################################################################
+    dict(
+    type='Albumentation',
+    transforms=[
+        dict(
+            type='CoarseDropout', #随机去除图像的一块区域 https://blog.csdn.net/zhangyuexiang123/article/details/107705311
+            max_holes=8,
+            max_height=40,
+            max_width=40,
+            min_holes=1,
+            min_height=10,
+            min_width=10,
+            p=0.5),
+    ]),
+    ##################################################################################################################
     dict(type='ToTensor'),
     dict(
         type='NormalizeTensor',
@@ -159,8 +174,8 @@ test_pipeline = val_pipeline
 # data_root = 'data/coco'
 data_root = '/home/ytwang/dataset/COCO2017'
 data = dict(
-    samples_per_gpu=64,#64,
-    workers_per_gpu=4,#4,
+    samples_per_gpu=112,#64,
+    workers_per_gpu=8,#4,
     train=dict(
         type='TopDownCocoDataset',
         ann_file=f'{data_root}/annotations/person_keypoints_train2017.json',

@@ -1,0 +1,596 @@
+#################################################################################################################################################################################
+(base2) [ytwang@gpu02 mmpose]$ PORT=29503 ./tools/dist_test.sh configs/top_down/eahrnet/coco/eahrnet_18_coco_256x192.py work_dirs/eahrnet_18_coco_256x192/best.pth 1 --eval mAP
+#################################################################################################################################################################################
+***************************************************************************************** ECA ***********************************************************************************
+# batchsize=512 显存占用 ?         liteHRNet github AP 0.648 下载的.pth测得AP0.644  从0跑了210epoch，测得0.636，train中测得的是 0.6524  再训练150epoch之后是0.640
+#                                 EAHRNet AP只有0.631，250epoch也只有0.632
+# 为什么这次测试这么慢？和服务器上跑的任务多少有关？
+loading annotations into memory...
+Done (t=0.46s)
+creating index...
+index created!
+=> Total boxes: 104125
+=> Total boxes after filter low score@0.0: 104125
+=> num_images: 5000
+=> load 104125 samples
+Use load_from_local loader
+[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 104125/104125, 81.5 task/s, elapsed: 1278s, ETA:     0sLoading and preparing results...
+DONE (t=5.84s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *keypoints*
+DONE (t=12.73s).
+Accumulating evaluation results...
+DONE (t=0.34s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.631
+ Average Precision  (AP) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.862
+ Average Precision  (AP) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.706
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.602
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.689
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.694
+ Average Recall     (AR) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.907
+ Average Recall     (AR) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.764
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.656
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.749
+AP: 0.6309671158720458
+AP (L): 0.689058053576354
+AP (M): 0.6022707662037804
+AP .5: 0.8619026261715202
+AP .75: 0.7063375680479007
+AR: 0.6944584382871536
+AR (L): 0.749386845039019
+AR (M): 0.6558863698443049
+AR .5: 0.9069584382871536
+AR .75: 0.7640113350125944
+
+******************************************************************************************
+210epoch基础上再训练40epoch 按210的学习率 
+[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 104125/104125, 249.0 task/s, elapsed: 418s, ETA:     0sLoading and preparing results...
+DONE (t=5.19s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *keypoints*
+DONE (t=15.56s).
+Accumulating evaluation results...
+DONE (t=0.41s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.632
+ Average Precision  (AP) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.862
+ Average Precision  (AP) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.708
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.603
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.690
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.695
+ Average Recall     (AR) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.907
+ Average Recall     (AR) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.767
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.657
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.750
+AP: 0.6319502767322418
+AP (L): 0.6899702998223197
+AP (M): 0.6030516489858603
+AP .5: 0.862119751610579
+AP .75: 0.7082180171617779
+AR: 0.695308564231738
+AR (L): 0.7496841322928279
+AR (M): 0.6571155422015842
+AR .5: 0.9072732997481109
+AR .75: 0.7671599496221663
+******************************************************************************************
+
+******************************************************************************************
+#在210epoch基础上再训练40epoch 按210的学习率 再直接用上dark
+[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 104126/104125, 268.9 task/s, elapsed: 387s, ETA:     0sLoading and preparing results...
+DONE (t=5.17s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *keypoints*
+DONE (t=14.58s).
+Accumulating evaluation results...
+DONE (t=0.39s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.639
+ Average Precision  (AP) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.862
+ Average Precision  (AP) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.712
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.610
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.698
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.700
+ Average Recall     (AR) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.906
+ Average Recall     (AR) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.769
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.662
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.755
+AP: 0.6393140729163972
+AP (L): 0.6978001032919927
+AP (M): 0.6104532624163733
+AP .5: 0.862497209140194
+AP .75: 0.711852629524489
+AR: 0.7003778337531487
+AR (L): 0.7551839464882943
+AR (M): 0.6619229718656106
+AR .5: 0.9064861460957179
+AR .75: 0.7692065491183879
+******************************************************************************************
+
+#################################################################################################################################################################################
+(base2) [ytwang@gpu02 mmpose]$ ./tools/dist_test.sh configs/top_down/eahrnet/coco/eahrnet_18_coco_256x192_ghost.py work_dirs/eahrnet_18_coco_256x192_ghost/best.pth 1 --eval mAP
+#################################################################################################################################################################################
+************************************************************************************* ghost_bottleneck **************************************************************************
+# batchsize=512 显存占用 ?         epoch90
+(base2) [ytwang@gpu01 mmpose]$ ./tools/dist_test.sh configs/top_down/eahrnet/coco/eahrnet_18_coco_256x192_ghost.py work_dirs/eahrnet_18_coco_256x192_ghost/best.pth 1 --eval mAP
+loading annotations into memory...
+Done (t=0.35s)
+creating index...
+index created!
+=> Total boxes: 104125
+=> Total boxes after filter low score@0.0: 104125
+=> num_images: 5000
+=> load 104125 samples
+Use load_from_local loader
+[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 104126/104125, 192.5 task/s, elapsed: 541s, ETA:     0sLoading and preparing results...
+DONE (t=5.01s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *keypoints*
+DONE (t=13.55s).
+Accumulating evaluation results...
+DONE (t=0.36s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.644
+ Average Precision  (AP) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.865
+ Average Precision  (AP) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.718
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.616
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.703
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.707
+ Average Recall     (AR) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.909
+ Average Recall     (AR) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.776
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.669
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.762
+AP: 0.644051171834548
+AP (L): 0.7028107584909813
+AP (M): 0.6158932684401746
+AP .5: 0.8646983654296204
+AP .75: 0.7177990003835952
+AR: 0.7074307304785894
+AR (L): 0.7624303232998885
+AR (M): 0.6686697623600109
+AR .5: 0.9088476070528967
+AR .75: 0.7762909319899244
+
+******************************************************************************************
+#在此基础上直接用上dark
+[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 104126/104125, 193.1 task/s, elapsed: 539s, ETA:     0sLoading and preparing results...
+DONE (t=5.07s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *keypoints*
+DONE (t=14.64s).
+Accumulating evaluation results...
+DONE (t=0.39s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.651
+ Average Precision  (AP) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.865
+ Average Precision  (AP) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.727
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.622
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.710
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.712
+ Average Recall     (AR) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.908
+ Average Recall     (AR) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.782
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.674
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.767
+AP: 0.6512497939539117
+AP (L): 0.7102350095152701
+AP (M): 0.6224718217423896
+AP .5: 0.8645078684505297
+AP .75: 0.7267836446409883
+AR: 0.712263853904282
+AR (L): 0.7665923448532144
+AR (M): 0.6738322862605846
+AR .5: 0.907588161209068
+AR .75: 0.7816435768261965
+******************************************************************************************
+
+#################################################################################################################################################################################
+(base2) [ytwang@gpu01 mmpose]$ ./tools/dist_test.sh configs/top_down/lite_hrnet/coco/litehrnet_18_coco_256x192_dark.py work_dirs/litehrnet_18_coco_256x192_dark/best.pth 2 --eval mAP
+#################################################################################################################################################################################
+******************************************************************************************** Dark *******************************************************************************
+# batchsize=512 显存占用 ?         epoch190
+loading annotations into memory...
+loading annotations into memory...
+Done (t=0.36s)
+creating index...
+index created!
+Done (t=0.40s)
+creating index...
+index created!
+=> Total boxes: 104125
+=> Total boxes: 104125
+=> Total boxes after filter low score@0.0: 104125
+=> num_images: 5000
+=> load 104125 samples
+Use load_from_local loader
+=> Total boxes after filter low score@0.0: 104125
+=> num_images: 5000
+=> load 104125 samples
+Use load_from_local loader
+[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 104126/104125, 312.4 task/s, elapsed: 333s, ETA:     0sLoading and preparing results...
+DONE (t=5.64s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *keypoints*
+DONE (t=15.53s).
+Accumulating evaluation results...
+DONE (t=0.41s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.644
+ Average Precision  (AP) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.863
+ Average Precision  (AP) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.715
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.615
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.702
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.705
+ Average Recall     (AR) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.907
+ Average Recall     (AR) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.772
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.666
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.761
+AP: 0.643508960573417
+AP (L): 0.7020216501113692
+AP (M): 0.6150051794221151
+AP .5: 0.8625865284948598
+AP .75: 0.7154437771687366
+AR: 0.7051952141057936
+AR (L): 0.760795243403939
+AR (M): 0.6662114176454521
+AR .5: 0.9074307304785895
+AR .75: 0.7715680100755667
+
+#################################################################################################################################################################################
+(base2) [ytwang@gpu02 mmpose]$ ./tools/dist_test.sh configs/top_down/eahrnet/coco/eahrnet_18_coco_256x192_ca.py work_dirs/eahrnet_18_coco_256x192_ca/best.pth 2 --eval mAP
+#################################################################################################################################################################################
+******************************************************************************************* CA **********************************************************************************
+loading annotations into memory...
+loading annotations into memory...
+Done (t=0.35s)
+creating index...
+index created!
+Done (t=0.37s)
+creating index...
+index created!
+=> Total boxes: 104125
+=> Total boxes: 104125
+=> Total boxes after filter low score@0.0: 104125
+=> num_images: 5000
+=> load 104125 samples
+Use load_from_local loader
+=> Total boxes after filter low score@0.0: 104125
+=> num_images: 5000
+=> load 104125 samples
+Use load_from_local loader
+[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 104126/104125, 341.9 task/s, elapsed: 305s, ETA:     0sLoading and preparing results...
+DONE (t=5.22s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *keypoints*
+DONE (t=13.48s).
+Accumulating evaluation results...
+DONE (t=0.36s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.640
+ Average Precision  (AP) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.862
+ Average Precision  (AP) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.714
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.612
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.697
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.704
+ Average Recall     (AR) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.908
+ Average Recall     (AR) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.773
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.666
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.757
+AP: 0.6399360518901179
+AP (L): 0.6969192034403341
+AP (M): 0.6122553003992163
+AP .5: 0.8624197144325698
+AP .75: 0.7140333868176517
+AR: 0.7035107052896725
+AR (L): 0.757450761798588
+AR (M): 0.6656104889374488
+AR .5: 0.907588161209068
+AR .75: 0.7726700251889169
+
+******************************************************************************************
+#在此基础上直接用上dark
+[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 104126/104125, 268.7 task/s, elapsed: 387s, ETA:     0sLoading and preparing results...
+DONE (t=4.73s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *keypoints*
+DONE (t=11.40s).
+Accumulating evaluation results...
+DONE (t=0.31s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.646
+ Average Precision  (AP) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.863
+ Average Precision  (AP) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.720
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.618
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.704
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.708
+ Average Recall     (AR) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.908
+ Average Recall     (AR) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.774
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.670
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.762
+AP: 0.646356311028263
+AP (L): 0.7040691334190688
+AP (M): 0.618257157504659
+AP .5: 0.863170967593261
+AP .75: 0.7200483131595928
+AR: 0.7077455919395466
+AR (L): 0.7622816796729841
+AR (M): 0.6697350450696531
+AR .5: 0.907588161209068
+AR .75: 0.7744017632241813
+******************************************************************************************
+
+#################################################################################################################################################################################
+./tools/dist_test.sh configs/top_down/eahrnet/coco/eahrnet_18_coco_256x192_aug-ghost-ca.py work_dirs/eahrnet_18_coco_256x192_aug-ghost-ca/best.pth 2 --eval mAP
+#################################################################################################################################################################################
+*************************************************************************************** Aug-Ghost-CA ****************************************************************************
+# batchsize=512 显存占用 5024M         epoch210
+loading annotations into memory...
+loading annotations into memory...
+Done (t=0.37s)
+creating index...
+index created!
+Done (t=0.41s)
+creating index...
+index created!
+=> Total boxes: 104125
+=> Total boxes: 104125
+=> Total boxes after filter low score@0.0: 104125
+=> num_images: 5000
+=> load 104125 samples
+Use load_from_local loader
+=> Total boxes after filter low score@0.0: 104125
+=> num_images: 5000
+=> load 104125 samples
+Use load_from_local loader
+[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 104126/104125, 411.4 task/s, elapsed: 253s, ETA:     0sLoading and preparing results...
+DONE (t=4.99s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *keypoints*
+DONE (t=14.79s).
+Accumulating evaluation results...
+DONE (t=0.38s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.646
+ Average Precision  (AP) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.869
+ Average Precision  (AP) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.720
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.617
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.705
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.708
+ Average Recall     (AR) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.912
+ Average Recall     (AR) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.776
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.670
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.762
+AP: 0.6462622726235032
+AP (L): 0.7054043101200071
+AP (M): 0.6170099152067311
+AP .5: 0.8687944794461251
+AP .75: 0.7202592029306099
+AR: 0.708028967254408
+AR (L): 0.7623188405797101
+AR (M): 0.6701174542474734
+AR .5: 0.9123110831234257
+AR .75: 0.7764483627204031
+
+******************************************************************************************
+#在此基础上直接用上dark   一点念想都不给我留
+[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 104126/104125, 343.4 task/s, elapsed: 303s, ETA:     0sLoading and preparing results...
+DONE (t=4.72s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *keypoints*
+DONE (t=14.94s).
+Accumulating evaluation results...
+DONE (t=0.38s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.653
+ Average Precision  (AP) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.868
+ Average Precision  (AP) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.730
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.623
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.713
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.713
+ Average Recall     (AR) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.911
+ Average Recall     (AR) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.783
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.675
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.767
+AP: 0.6528932600600289
+AP (L): 0.7126818877682232
+AP (M): 0.6231587682764849
+AP .5: 0.8684788891571312
+AP .75: 0.7297419886469867
+AR: 0.713051007556675
+AR (L): 0.7671497584541063
+AR (M): 0.6753346080305926
+AR .5: 0.9112090680100756
+AR .75: 0.782588161209068
+
+******************************************************************************************
+
+#################################################################################################################################################################################
+(base2) [ytwang@gpu02 mmpose]$ ./tools/dist_test.sh configs/top_down/eahrnet/coco/eahrnet_18_coco_256x192_ghost_fuse.py work_dirs/eahrnet_18_coco_256x192_ghost_fuse/best.pth 2 --eval mAP
+#################################################################################################################################################################################
+*************************************************************************************** ghost-fuse ****************************************************************************
+参数量为828K 计算量为163.2M    liteHRNet 原设计1.13M、205.23M  AP 0.648
+                num_modules=(2, 4, 2),
+                num_branches=(2, 3, 4),
+                num_blocks=(2, 2, 2),
+*****************************************
+Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+*****************************************
+loading annotations into memory...
+loading annotations into memory...
+Done (t=0.27s)
+creating index...
+index created!
+Done (t=0.32s)
+creating index...
+index created!
+=> Total boxes: 104125
+=> Total boxes: 104125
+=> Total boxes after filter low score@0.0: 104125
+=> num_images: 5000
+=> load 104125 samples
+Use load_from_local loader
+=> Total boxes after filter low score@0.0: 104125
+=> num_images: 5000
+=> load 104125 samples
+Use load_from_local loader
+[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 104126/104125, 473.0 task/s, elapsed: 220s, ETA:     0sLoading and preparing results...
+DONE (t=3.73s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *keypoints*
+DONE (t=9.87s).
+Accumulating evaluation results...
+DONE (t=0.27s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.625
+ Average Precision  (AP) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.855
+ Average Precision  (AP) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.699
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.599
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.681
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.688
+ Average Recall     (AR) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.899
+ Average Recall     (AR) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.760
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.650
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.743
+AP: 0.6252507744411613
+AP (L): 0.6810782872453133
+AP (M): 0.5994533857171889
+AP .5: 0.8552627767510055
+AP .75: 0.6988396408513066
+AR: 0.6884288413098236
+AR (L): 0.7426978818283165
+AR (M): 0.6503414367659109
+AR .5: 0.8986146095717884
+AR .75: 0.759603274559194
+
+******************************************************************************************
+#在此基础上直接用上dark 
+[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 104126/104125, 402.9 task/s, elapsed: 258s, ETA:     0sLoading and preparing results...
+DONE (t=3.69s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *keypoints*
+DONE (t=10.04s).
+Accumulating evaluation results...
+DONE (t=0.27s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.632
+ Average Precision  (AP) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.856
+ Average Precision  (AP) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.707
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.605
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.688
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.693
+ Average Recall     (AR) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.899
+ Average Recall     (AR) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.763
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.656
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.747
+AP: 0.6321445225917055
+AP (L): 0.6882327024163584
+AP (M): 0.6054965999323425
+AP .5: 0.8560656994920743
+AP .75: 0.7071789853025643
+AR: 0.6934981108312342
+AR (L): 0.7473058342623561
+AR (M): 0.6557497951379404
+AR .5: 0.8992443324937027
+AR .75: 0.7629093198992444
+******************************************************************************************
+
+
+#################################################################################################################################################################################
+(base2) [ytwang@gpu01 mmpose]$ PORT=29501 ./tools/dist_test.sh configs/top_down/eahrnet/coco/eahrnet_18_coco_256x192_ghost.py work_dirs/eahrnet_18_coco_256x192_ghost/best.pth 2 --eval mAP
+#################################################################################################################################################################################
+*************************************************************************************** ghost-fuse ****************************************************************************
+参数量为1.1M 计算量为197.27M    liteHRNet 原设计1.13M、205.23M  AP 0.648
+                num_modules=(2, 4, 2),
+                num_branches=(2, 3, 4),
+                num_blocks=(4, 4, 4),
+loading annotations into memory...
+loading annotations into memory...
+Done (t=0.36s)
+creating index...
+Done (t=0.36s)
+creating index...
+index created!
+index created!
+=> Total boxes: 104125
+=> Total boxes: 104125
+=> Total boxes after filter low score@0.0: 104125
+=> num_images: 5000
+=> load 104125 samples
+=> Total boxes after filter low score@0.0: 104125
+=> num_images: 5000
+=> load 104125 samples
+Use load_from_local loader
+Use load_from_local loader
+[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 104126/104125, 306.4 task/s, elapsed: 340s, ETA:     0sLoading and preparing results...
+DONE (t=5.38s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *keypoints*
+DONE (t=15.21s).
+Accumulating evaluation results...
+DONE (t=0.37s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.643
+ Average Precision  (AP) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.864
+ Average Precision  (AP) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.723
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.617
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.699
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.706
+ Average Recall     (AR) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.908
+ Average Recall     (AR) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.778
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.669
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.758
+AP: 0.6430501428763017
+AP (L): 0.6989332736571412
+AP (M): 0.6170748662141075
+AP .5: 0.8637031640455926
+AP .75: 0.7230485344220642
+AR: 0.7056045340050379
+AR (L): 0.7579710144927537
+AR (M): 0.6692433761267413
+AR .5: 0.908375314861461
+AR .75: 0.7775503778337531
+
+******************************************************************************************
+#在此基础上直接用上dark 
+[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 104126/104125, 264.1 task/s, elapsed: 394s, ETA:     0sLoading and preparing results...
+DONE (t=5.28s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *keypoints*
+DONE (t=15.42s).
+Accumulating evaluation results...
+DONE (t=0.38s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.650
+ Average Precision  (AP) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.864
+ Average Precision  (AP) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.725
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.622
+ Average Precision  (AP) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.708
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=   all | maxDets= 20 ] = 0.711
+ Average Recall     (AR) @[ IoU=0.50      | type=   all | maxDets= 20 ] = 0.907
+ Average Recall     (AR) @[ IoU=0.75      | type=   all | maxDets= 20 ] = 0.779
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type=medium | maxDets= 20 ] = 0.673
+ Average Recall     (AR) @[ IoU=0.50:0.95 | type= large | maxDets= 20 ] = 0.764
+AP: 0.649530450848807
+AP (L): 0.7075474553241362
+AP (M): 0.6224315431740051
+AP .5: 0.8637695138477893
+AP .75: 0.7250206927216442
+AR: 0.710721032745592
+AR (L): 0.7641768859160164
+AR (M): 0.6734225621414913
+AR .5: 0.9074307304785895
+AR .75: 0.7794395465994962
+******************************************************************************************

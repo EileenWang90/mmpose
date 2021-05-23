@@ -1,10 +1,10 @@
 log_level = 'INFO'
 load_from = None #'work_dirs/litehrnet_18_coco_256x192/best_210.pth'#None
-resume_from = 'work_dirs/litehrnet_18_coco_256x192_augment/epoch_80.pth'
+resume_from =None # 'work_dirs/litehrnet_18_coco_256x192_augment/epoch_210.pth'
 dist_params = dict(backend='nccl')
 workflow = [('train', 1)]
 checkpoint_config = dict(interval=10)
-evaluation = dict(interval=10, metric='mAP')
+evaluation = dict(interval=5, metric='mAP')
 
 optimizer = dict(
     type='Adam',
@@ -69,7 +69,7 @@ model = dict(
     train_cfg=dict(),
     test_cfg=dict(
         flip_test=True,
-        post_process=True, #'unbiased', ##'default'  True
+        post_process='unbiased', #'unbiased', ##'default'  True
         shift_heatmap=True,
         unbiased_decoding=False,
         modulate_kernel=11),
@@ -153,7 +153,7 @@ train_pipeline = [
         type='NormalizeTensor',
         mean=[0.485, 0.456, 0.406],
         std=[0.229, 0.224, 0.225]),
-    dict(type='TopDownGenerateTarget', sigma=2), # unbiased_encoding=True), ##
+    dict(type='TopDownGenerateTarget', sigma=2, unbiased_encoding=True), # unbiased_encoding=True), ##
     dict(
         type='Collect',
         keys=['img', 'target', 'target_weight'],

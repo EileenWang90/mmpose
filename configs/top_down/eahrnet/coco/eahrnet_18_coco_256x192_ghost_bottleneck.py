@@ -40,7 +40,7 @@ model = dict(
     type='TopDown',
     pretrained=None, #None
     backbone=dict(
-        type='EAHRNet_ghost',
+        type='EAHRNet_ghost_bottleneck',
         in_channels=3,
         extra=dict(
             stem=dict(stem_channels=32, out_channels=32, expand_ratio=1),
@@ -48,7 +48,7 @@ model = dict(
             stages_spec=dict(
                 num_modules=(2, 4, 2),
                 num_branches=(2, 3, 4),
-                num_blocks=(4, 4, 4),
+                num_blocks=(2, 2, 2),
                 module_type=('LITE', 'LITE', 'LITE'),
                 with_fuse=(True, True, True),
                 reduce_ratios=(8, 8, 8),

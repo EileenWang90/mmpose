@@ -63,9 +63,111 @@ class ECASpatialWeighting(nn.Module): #using ECANet
         out = self.sigmoid(out) # Multi-scale information fusion
         return x * out.expand_as(x)
 
-###################################################################################################################################
+#########################################################################################################################################
 
-class SpatialWeighting(nn.Module): #using SENet
+################################################################ CoordAttention #########################################################
+class h_sigmoid(nn.Module):
+    def __init__(self, inplace=True):
+        super(h_sigmoid, self).__init__()
+        self.relu = nn.ReLU6(inplace=inplace)
+
+    def forward(self, x):
+        return self.relu(x + 3) / 6
+
+class h_swish(nn.Module):
+    def __init__(self, inplace=True):
+        super(h_swish, self).__init__()
+        self.sigmoid = h_sigmoid(inplace=inplace)
+
+    def forward(self, x):
+        return x * self.sigmoid(x)
+
+class CoordAtt(nn.Module):
+    def __init__(self, inp, oup, reduction=32):
+        super(CoordAtt, self).__init__()
+        self.pool_h = nn.AdaptiveAvgPool2d((None, 1))
+        self.pool_w = nn.AdaptiveAvgPool2d((1, None))
+
+        mip = max(8, inp // reduction)
+
+        self.conv1 = nn.Conv2d(inp, mip, kernel_size=1, stride=1, padding=0)
+        self.bn1 = nn.BatchNorm2d(mip)
+        self.act = h_swish()
+        
+        self.conv_h = nn.Conv2d(mip, oup, kernel_size=1, stride=1, padding=0)
+        self.conv_w = nn.Conv2d(mip, oup, kernel_size=1, stride=1, padding=0)
+
+    def forward(self, x):
+        identity = x
+        
+        n,c,h,w = x.size()
+        x_h = self.pool_h(x)
+        x_w = self.pool_w(x).permute(0, 1, 3, 2)
+
+        y = torch.cat([x_h, x_w], dim=2)
+        y = self.conv1(y)
+        y = self.bn1(y)
+        y = self.act(y) 
+        
+        x_h, x_w = torch.split(y, [h, w], dim=2)
+        x_w = x_w.permute(0, 1, 3, 2)
+
+        a_h = self.conv_h(x_h).sigmoid()
+        a_w = self.conv_w(x_w).sigmoid()
+
+        out = identity * a_w * a_h
+
+        return out
+
+class SpatialWeighting(nn.Module): #using CoordAttention
+    
+    def __init__(self,
+                 channels,
+                 ratio=32,
+                 conv_cfg=None,
+                 act_cfg=(dict(type='ReLU'), dict(type='Sigmoid'))):
+        super().__init__()
+        if isinstance(act_cfg, dict):
+            act_cfg = (act_cfg, act_cfg)
+        assert len(act_cfg) == 2
+        assert mmcv.is_tuple_of(act_cfg, dict)
+        self.pool_h = nn.AdaptiveAvgPool2d((None, 1))
+        self.pool_w = nn.AdaptiveAvgPool2d((1, None))
+
+        mip = max(8, channels // ratio)
+
+        self.conv1 = nn.Conv2d(channels, mip, kernel_size=1, stride=1, padding=0)
+        self.bn1 = nn.BatchNorm2d(mip)
+        self.act = h_swish()
+        
+        self.conv_h = nn.Conv2d(mip, channels, kernel_size=1, stride=1, padding=0)
+        self.conv_w = nn.Conv2d(mip, channels, kernel_size=1, stride=1, padding=0)
+
+    def forward(self, x):
+        identity = x
+        
+        n,c,h,w = x.size()
+        x_h = self.pool_h(x)
+        x_w = self.pool_w(x).permute(0, 1, 3, 2)
+
+        y = torch.cat([x_h, x_w], dim=2)
+        y = self.conv1(y)
+        y = self.bn1(y)
+        y = self.act(y) 
+        
+        x_h, x_w = torch.split(y, [h, w], dim=2)
+        x_w = x_w.permute(0, 1, 3, 2)
+
+        a_h = self.conv_h(x_h).sigmoid()
+        a_w = self.conv_w(x_w).sigmoid()
+
+        out = identity * a_w * a_h
+
+        return out
+
+#########################################################################################################################################
+
+class SESpatialWeighting(nn.Module): #using SENet
     
     def __init__(self,
                  channels,
@@ -252,7 +354,7 @@ class SqueezeExcite(nn.Module):
         x = x * self.gate_fn(x_se)
         return x    
 
-class GhostModule(nn.Module): #GhostModule(in_chs, mid_chs, kernel_size=1, ratio=2, dw_size=3, stride=1, relu=True)
+class GhostModule(nn.Module):
     def __init__(self, inp, oup, kernel_size=1, ratio=2, dw_size=3, stride=1, relu=True):
         super(GhostModule, self).__init__()
         self.oup = oup
@@ -331,7 +433,7 @@ class GhostBottleneck(nn.Module):
         return x
 
 
-class Stem(nn.Module):
+class Stem(nn.Module):  #Stem_ghostBottleneck
 
     def __init__(self,
                  in_channels,
@@ -373,8 +475,10 @@ class Stem(nn.Module):
             out = _inner_forward(x)
 
         return out
+#########################################################################################################################################
 
-class Stem_shuffle(nn.Module):
+
+class Stem_shuffle(nn.Module): #Stem_shuffle
 
     def __init__(self,
                  in_channels,
@@ -757,34 +861,23 @@ class EAHRModule(nn.Module):
         for i in range(num_out_branches):
             fuse_layer = []
             for j in range(num_branches):
-                layers_tmp=[]
                 if j > i:
                     fuse_layer.append(
                         nn.Sequential(
-                            # build_conv_layer(
-                            #     self.conv_cfg,
-                            #     in_channels[j],
-                            #     in_channels[i],
-                            #     kernel_size=1,
-                            #     stride=1,
-                            #     padding=0,
-                            #     bias=False),
-                            # build_norm_layer(self.norm_cfg, in_channels[i])[1],
-                            # nn.Upsample(
-                            #     scale_factor=2**(j - i), mode='nearest')))
-                            GhostModule(
-                                        in_channels[j],
-                                        in_channels[i],
-                                        kernel_size=1,
-                                        ratio=2,
-                                        dw_size=3,
-                                        stride=1,
-                                        relu=False), ##已经包括了BN和relu(可选)
+                            build_conv_layer(
+                                self.conv_cfg,
+                                in_channels[j],
+                                in_channels[i],
+                                kernel_size=1,
+                                stride=1,
+                                padding=0,
+                                bias=False),
+                            build_norm_layer(self.norm_cfg, in_channels[i])[1],
                             nn.Upsample(
-                                    scale_factor=2**(j - i), mode='nearest')))
+                                scale_factor=2**(j - i), mode='nearest')))
                 elif j == i:
                     fuse_layer.append(None)
-                else:  #j < i
+                else:
                     conv_downsamples = []
                     for k in range(i - j):
                         if k == i - j - 1:
@@ -801,24 +894,16 @@ class EAHRModule(nn.Module):
                                         bias=False),
                                     build_norm_layer(self.norm_cfg,
                                                      in_channels[j])[1],
-                                    # build_conv_layer(
-                                    #     self.conv_cfg,
-                                    #     in_channels[j],
-                                    #     in_channels[i],
-                                    #     kernel_size=1,
-                                    #     stride=1,
-                                    #     padding=0,
-                                    #     bias=False),
-                                    # build_norm_layer(self.norm_cfg,
-                                    #                  in_channels[i])[1]))
-                                    GhostModule(
+                                    build_conv_layer(
+                                        self.conv_cfg,
                                         in_channels[j],
                                         in_channels[i],
                                         kernel_size=1,
-                                        ratio=2,
-                                        dw_size=3,
                                         stride=1,
-                                        relu=False))) ##已经包括了BN和relu(可选)
+                                        padding=0,
+                                        bias=False),
+                                    build_norm_layer(self.norm_cfg,
+                                                     in_channels[i])[1]))
                         else:
                             conv_downsamples.append(
                                 nn.Sequential(
@@ -833,25 +918,17 @@ class EAHRModule(nn.Module):
                                         bias=False),
                                     build_norm_layer(self.norm_cfg,
                                                      in_channels[j])[1],
-                                    # build_conv_layer(
-                                    #     self.conv_cfg,
-                                    #     in_channels[j],
-                                    #     in_channels[j],
-                                    #     kernel_size=1,
-                                    #     stride=1,
-                                    #     padding=0,
-                                    #     bias=False),
-                                    # build_norm_layer(self.norm_cfg,
-                                    #                  in_channels[j])[1],
-                                    # nn.ReLU(inplace=True)))
-                                    GhostModule(
+                                    build_conv_layer(
+                                        self.conv_cfg,
                                         in_channels[j],
                                         in_channels[j],
                                         kernel_size=1,
-                                        ratio=2,
-                                        dw_size=3,
                                         stride=1,
-                                        relu=True))) ##已经包括了BN和relu(可选)
+                                        padding=0,
+                                        bias=False),
+                                    build_norm_layer(self.norm_cfg,
+                                                     in_channels[j])[1],
+                                    nn.ReLU(inplace=True)))
                     fuse_layer.append(nn.Sequential(*conv_downsamples))
             fuse_layers.append(nn.ModuleList(fuse_layer))
 
@@ -886,7 +963,7 @@ class EAHRModule(nn.Module):
 
 
 @BACKBONES.register_module()
-class EAHRNet_ghost(nn.Module):
+class EAHRNet_aug_ghost_ca(nn.Module):
     """EfficientAttention-HRNet backbone.
 
     `High-Resolution Representations for Labeling Pixels and Regions

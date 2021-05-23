@@ -757,31 +757,30 @@ class EAHRModule(nn.Module):
         for i in range(num_out_branches):
             fuse_layer = []
             for j in range(num_branches):
-                layers_tmp=[]
                 if j > i:
                     fuse_layer.append(
                         nn.Sequential(
-                            # build_conv_layer(
-                            #     self.conv_cfg,
-                            #     in_channels[j],
-                            #     in_channels[i],
-                            #     kernel_size=1,
-                            #     stride=1,
-                            #     padding=0,
-                            #     bias=False),
-                            # build_norm_layer(self.norm_cfg, in_channels[i])[1],
-                            # nn.Upsample(
-                            #     scale_factor=2**(j - i), mode='nearest')))
-                            GhostModule(
-                                        in_channels[j],
-                                        in_channels[i],
-                                        kernel_size=1,
-                                        ratio=2,
-                                        dw_size=3,
-                                        stride=1,
-                                        relu=False), ##已经包括了BN和relu(可选)
+                            build_conv_layer(
+                                self.conv_cfg,
+                                in_channels[j],
+                                in_channels[i],
+                                kernel_size=1,
+                                stride=1,
+                                padding=0,
+                                bias=False),
+                            build_norm_layer(self.norm_cfg, in_channels[i])[1],
                             nn.Upsample(
-                                    scale_factor=2**(j - i), mode='nearest')))
+                                scale_factor=2**(j - i), mode='nearest')))
+                            # GhostModule(
+                            #             in_channels[j],
+                            #             in_channels[i],
+                            #             kernel_size=1,
+                            #             ratio=2,
+                            #             dw_size=3,
+                            #             stride=1,
+                            #             relu=False), ##已经包括了BN和relu(可选)
+                            # nn.Upsample(
+                            #         scale_factor=2**(j - i), mode='nearest')))
                 elif j == i:
                     fuse_layer.append(None)
                 else:  #j < i
@@ -801,24 +800,24 @@ class EAHRModule(nn.Module):
                                         bias=False),
                                     build_norm_layer(self.norm_cfg,
                                                      in_channels[j])[1],
-                                    # build_conv_layer(
-                                    #     self.conv_cfg,
-                                    #     in_channels[j],
-                                    #     in_channels[i],
-                                    #     kernel_size=1,
-                                    #     stride=1,
-                                    #     padding=0,
-                                    #     bias=False),
-                                    # build_norm_layer(self.norm_cfg,
-                                    #                  in_channels[i])[1]))
-                                    GhostModule(
+                                    build_conv_layer(
+                                        self.conv_cfg,
                                         in_channels[j],
                                         in_channels[i],
                                         kernel_size=1,
-                                        ratio=2,
-                                        dw_size=3,
                                         stride=1,
-                                        relu=False))) ##已经包括了BN和relu(可选)
+                                        padding=0,
+                                        bias=False),
+                                    build_norm_layer(self.norm_cfg,
+                                                     in_channels[i])[1]))
+                                    # GhostModule(
+                                    #     in_channels[j],
+                                    #     in_channels[i],
+                                    #     kernel_size=1,
+                                    #     ratio=2,
+                                    #     dw_size=3,
+                                    #     stride=1,
+                                    #     relu=False))) ##已经包括了BN和relu(可选)
                         else:
                             conv_downsamples.append(
                                 nn.Sequential(
@@ -833,25 +832,25 @@ class EAHRModule(nn.Module):
                                         bias=False),
                                     build_norm_layer(self.norm_cfg,
                                                      in_channels[j])[1],
-                                    # build_conv_layer(
-                                    #     self.conv_cfg,
-                                    #     in_channels[j],
-                                    #     in_channels[j],
-                                    #     kernel_size=1,
-                                    #     stride=1,
-                                    #     padding=0,
-                                    #     bias=False),
-                                    # build_norm_layer(self.norm_cfg,
-                                    #                  in_channels[j])[1],
-                                    # nn.ReLU(inplace=True)))
-                                    GhostModule(
+                                    build_conv_layer(
+                                        self.conv_cfg,
                                         in_channels[j],
                                         in_channels[j],
                                         kernel_size=1,
-                                        ratio=2,
-                                        dw_size=3,
                                         stride=1,
-                                        relu=True))) ##已经包括了BN和relu(可选)
+                                        padding=0,
+                                        bias=False),
+                                    build_norm_layer(self.norm_cfg,
+                                                     in_channels[j])[1],
+                                    nn.ReLU(inplace=True)))
+                                    # GhostModule(
+                                    #     in_channels[j],
+                                    #     in_channels[j],
+                                    #     kernel_size=1,
+                                    #     ratio=2,
+                                    #     dw_size=3,
+                                    #     stride=1,
+                                    #     relu=True))) ##已经包括了BN和relu(可选)
                     fuse_layer.append(nn.Sequential(*conv_downsamples))
             fuse_layers.append(nn.ModuleList(fuse_layer))
 
@@ -886,7 +885,7 @@ class EAHRModule(nn.Module):
 
 
 @BACKBONES.register_module()
-class EAHRNet_ghost(nn.Module):
+class EAHRNet_ghost_bottleneck(nn.Module):
     """EfficientAttention-HRNet backbone.
 
     `High-Resolution Representations for Labeling Pixels and Regions

@@ -1,5 +1,5 @@
 log_level = 'INFO'
-load_from = 'work_dirs/litehrnet_18_coco_256x192/best_210.pth'#None
+load_from = None #'work_dirs/litehrnet_18_coco_256x192/best_210.pth'#None
 resume_from = None
 dist_params = dict(backend='nccl')
 workflow = [('train', 1)]
@@ -8,7 +8,7 @@ evaluation = dict(interval=10, metric='mAP')
 
 optimizer = dict(
     type='Adam',
-    lr=2e-4, #lr=2e-3,
+    lr=2e-3, #lr=2e-3,
 )
 optimizer_config = dict(grad_clip=None)
 # learning policy
@@ -18,8 +18,8 @@ lr_config = dict(
     warmup='linear',
     warmup_iters=500,
     warmup_ratio=0.001,
-    step=[70, 120]) #step=[170, 200])
-total_epochs = 150 #210
+    step=[170, 200]) #step=[170, 200])
+total_epochs = 210 #210
 log_config = dict(
     interval=50,
     hooks=[dict(type='TextLoggerHook'),
@@ -69,7 +69,7 @@ model = dict(
     train_cfg=dict(),
     test_cfg=dict(
         flip_test=True,
-        post_process=True, #'unbiased', ##'default'  True
+        post_process=True, #'unbiased', 'default'  True
         shift_heatmap=True,
         unbiased_decoding=False,
         modulate_kernel=11),
@@ -82,7 +82,7 @@ data_cfg = dict(
     num_joints=channel_cfg['dataset_joints'],
     dataset_channel=channel_cfg['dataset_channel'],
     inference_channel=channel_cfg['inference_channel'],
-    soft_nms=False,
+    soft_nms=False, #False
     nms_thr=1.0,
     oks_thr=0.9,
     vis_thr=0.2,
@@ -159,8 +159,8 @@ test_pipeline = val_pipeline
 # data_root = 'data/coco'
 data_root = '/home/ytwang/dataset/COCO2017'
 data = dict(
-    samples_per_gpu=64,#64,
-    workers_per_gpu=4,#4,
+    samples_per_gpu=256,#64,
+    workers_per_gpu=16,#4,
     train=dict(
         type='TopDownCocoDataset',
         ann_file=f'{data_root}/annotations/person_keypoints_train2017.json',

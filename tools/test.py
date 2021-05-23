@@ -96,7 +96,7 @@ def main():
     # build the dataloader
     dataset = build_dataset(cfg.data.test, dict(test_mode=True))
     dataloader_setting = dict(
-        samples_per_gpu=512, #1
+        samples_per_gpu=512, #1 512
         workers_per_gpu=cfg.data.get('workers_per_gpu', 1),
         dist=distributed,
         shuffle=False,
